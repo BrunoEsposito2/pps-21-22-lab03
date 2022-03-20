@@ -31,22 +31,30 @@ class ListTaskTest {
    */
 
   @Test def dropTest(): Unit =
+    assertEquals(lst, drop(lst, 0))
+    assertEquals(Nil(), drop(Nil(), 1))
     assertEquals(Cons(20, Cons(30, Nil())), drop(lst, 1))
     assertEquals(Cons(30, Nil()), drop(lst, 2))
     assertEquals(Nil(), drop(lst, 5))
 
   @Test def appendTest(): Unit =
     assertEquals(Cons(10, Cons(20, Cons(30, Cons(40, Nil())))), append(lst, tail))
+    assertEquals(lst, append(lst, Nil()))
+    assertEquals(lst, append(Nil(), lst))
+    assertEquals(Nil(), append(Nil(), Nil()))
 
   @Test def flatMapTest(): Unit =
+    assertEquals(Nil(), flatMap(Nil())(v => Nil()))
     assertEquals(flatLst, flatMap(lst)(v => Cons(v + 1, Nil())))
     assertEquals(flat2Lst, flatMap(lst)(v => Cons(v + 1, Cons(v + 2, Nil()))))
 
   @Test def mapTest(): Unit =
     assertEquals(flatLst, map(lst)(_ + 1))
+    assertEquals(Nil(), map(Nil())(v => Nil()))
 
   @Test def filterTest(): Unit =
     assertEquals(Cons(20, Cons(30, Nil())), filter(lst)(_ >= 20))
+    assertEquals(Nil(), filter(Nil())(v => v == Nil()))
 
   @Test def testMax(): Unit =
     assertEquals(Some(25), max(maxLst))
@@ -60,15 +68,19 @@ class ListTaskTest {
     val tLst = Cons(Teacher(t1Name, c1), Cons(Teacher(t1Name, c3), Cons(Teacher(t1Name, c2),
       Cons(Teacher(t2Name, c2), Cons(Teacher(t2Name, c3), Nil())))))
     assertEquals(Cons(c1, Cons(c2, Cons(c3, Nil()))), getCourses(tLst))
+    assertEquals(Nil(), getCourses(Nil()))
 
   @Test def getCoursesFlatmapTest(): Unit =
     val tLst = Cons(Teacher(t1Name, c1), Cons(Teacher(t1Name, c3), Cons(Teacher(t1Name, c2),
       Cons(Teacher(t2Name, c2), Cons(Teacher(t2Name, c3), Nil())))))
     assertEquals(Cons(c1, Cons(c2, Cons(c3, Nil()))), getCoursesFlatmap(tLst))
+    assertEquals(Nil(), getCoursesFlatmap(Nil()))
 
   @Test def foldLeftTest(): Unit =
     assertEquals(-16, foldLeft(foldlst)(foldReduce)(foldOp))
+    assertEquals(foldReduce, foldLeft(Nil())(foldReduce)(foldOp))
 
   @Test def foldRightTest(): Unit =
     assertEquals(-8, foldRight(foldlst)(foldReduce)(foldOp))
+    assertEquals(foldReduce, foldRight(Nil())(foldReduce)(foldOp))
 }
