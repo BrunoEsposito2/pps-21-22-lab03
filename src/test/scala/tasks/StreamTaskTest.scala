@@ -15,6 +15,12 @@ class StreamTaskTest {
   val f: (Int) => Int = _ + 1
   val s = Stream.take(Stream.iterate(init)(f))(tot)
 
+  @Test def dropEmptyTest(): Unit =
+    val start = 6
+    val expected = empty()
+    val actual = Stream.drop(empty())(start)
+    assertEquals(Stream.toList(Stream.take(expected)(tot-start)), Stream.toList(actual))
+
   @Test def dropTest(): Unit =
     val start = 6
     val expected = Stream.iterate(start)(f)
