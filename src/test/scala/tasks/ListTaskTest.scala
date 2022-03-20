@@ -56,7 +56,6 @@ class ListTaskTest {
    * Tests of Task part 2
    */
 
-  /* Fallisce per l'append */
   @Test def getCoursesTest(): Unit =
     val tLst = Cons(Teacher(t1Name, c1), Cons(Teacher(t1Name, c3), Cons(Teacher(t1Name, c2),
       Cons(Teacher(t2Name, c2), Cons(Teacher(t2Name, c3), Nil())))))
