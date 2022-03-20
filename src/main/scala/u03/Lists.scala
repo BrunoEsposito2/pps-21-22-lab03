@@ -62,14 +62,14 @@ object Lists extends App:
       case Nil() => op(0, reduce)
 
   /*
-  * Test print of foldLeft
+  * Prints of foldLeft and foldRight
   *
   val lst = List.Cons(3, List.Cons(7, List.Cons(1, List.Cons(5, List.Nil()))))
   println(foldLeft(lst)(0)(_ - _))
-  */
 
   val lst = List.Cons(3, List.Cons(7, List.Cons(1, List.Cons(5, List.Nil()))))
   println(List.foldRight(lst)(0)(_ - _))
+  */
 
   val l = List.Cons(10, List.Cons(20, List.Cons(30, List.Nil())))
   println(List.sum(l)) // 60
