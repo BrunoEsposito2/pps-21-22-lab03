@@ -39,6 +39,7 @@ object Lists extends App:
       case (Cons(h, t), Cons(h2, t2)) if t != Nil() => Cons(h, append(t, right))
       case (Cons(h, t), Cons(h2, t2)) if t == Nil() => append(Cons(h,  right), t)
       case (Cons(h, t), Nil()) => left
+      case (Nil(), Cons(h2, t2)) => right
       case _ => Nil()
 
     def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] = l match
@@ -83,7 +84,6 @@ object Lists extends App:
   println(drop(l, 2))
   println(drop(l, 5))
 
-  /* Da fixare */
   val tail = Cons(40, Nil())
   println(append(l, tail))
 

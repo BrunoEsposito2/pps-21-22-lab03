@@ -35,20 +35,16 @@ class ListTaskTest {
     assertEquals(Cons(30, Nil()), drop(lst, 2))
     assertEquals(Nil(), drop(lst, 5))
 
-  /* Da fixare */
   @Test def appendTest(): Unit =
     assertEquals(Cons(10, Cons(20, Cons(30, Cons(40, Nil())))), append(lst, tail))
 
-  /* Fallisce per l'append */
   @Test def flatMapTest(): Unit =
     assertEquals(flatLst, flatMap(lst)(v => Cons(v + 1, Nil())))
     assertEquals(flat2Lst, flatMap(lst)(v => Cons(v + 1, Cons(v + 2, Nil()))))
 
-  /* Fallisce per l'append */
   @Test def mapTest(): Unit =
     assertEquals(flatLst, map(lst)(_ + 1))
 
-  /* Fallisce per l'append */
   @Test def filterTest(): Unit =
     assertEquals(Cons(20, Cons(30, Nil())), filter(lst)(_ >= 20))
 
