@@ -26,8 +26,8 @@ object Lists extends App:
       case Nil() => Nil()
 
     def filter[A](l1: List[A])(pred: A => Boolean): List[A] = l1 match
-      case Cons(h, t) if pred(h) => flatMap(l)(s => Cons(h, filter(t)(pred)))
-      case Cons(_, t) => filter(t)(pred) //flatMap(t)(s => Cons(s, filter(t)(pred)))
+      case Cons(h, t) if pred(h) => flatMap(l1)(s => Cons(h, filter(t)(pred)))
+      case Cons(_, Cons(h, t)) => Cons(h, filter(t)(pred))
       case Nil() => Nil()
 
     def drop[A](l: List[A], n: Int): List[A] = l match
@@ -35,10 +35,11 @@ object Lists extends App:
       case Cons(h, t) if n == 0 => l
       case Nil() => Nil()
 
-    /* Da fixare */
     def append[A](left: List[A], right: List[A]): List[A] = (left, right) match
-      case (Cons(h, t), Cons(h2, t2)) => append(Cons(h, Cons(h2, t)), t2)
-      case (Cons(h2, t2), Nil()) => left
+      case (Cons(h, t), Cons(h2, t2)) if t != Nil() => Cons(h, append(t, right))
+      case (Cons(h, t), Cons(h2, t2)) if t == Nil() => append(Cons(h,  right), t)
+      case (Cons(h, t), Nil()) => left
+      case _ => Nil()
 
     def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] = l match
       case Cons(h, t) => append(f(h), flatMap(t)(f))
@@ -103,14 +104,18 @@ object Lists extends App:
       case Student(n, _) => n
       case Teacher(n, _) => n
 
+    def isStudent(p: Person): Boolean = p match
+      case Student(_, _) => true
+      case _ => false
+
     def course[Teacher](p: Person): String = p match
       case Teacher(_, c) => c
       case _ => null
 
     def getCourses(p: List[Person]): List[String] = p match
-      case Cons(h, t) => map(filter(p)(h => course(h) != null))(h => course(h))
+      case Cons(h, t) => Cons(course(h), map(filter(t)(course(_) == course(h)))(course(_)))
       case Nil() => Nil()
 
     def getCoursesFlatmap(p: List[Person]): List[String] = p match
-      case Cons(h, t) => flatMap(p)(s => Cons(course(h), getCourses(t)))
+      case Cons(h, t) => Cons(course(h), filter(flatMap(t)(s => Cons(course(s), Nil())))(_ == course(h)))
       case Nil() => Nil()

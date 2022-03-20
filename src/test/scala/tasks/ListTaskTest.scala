@@ -21,10 +21,6 @@ class ListTaskTest {
 
   val t1Name = "mario"
   val t2Name = "giulio"
-  val s1Name = "marco"
-  val s1Year = 2000
-  val s2Name = "claudia"
-  val s2Year = 2002
   val c1 = "matematica"
   val c2 = "inglese"
   val c3 = "italiano"
@@ -68,18 +64,12 @@ class ListTaskTest {
   @Test def getCoursesTest(): Unit =
     val tLst = Cons(Teacher(t1Name, c1), Cons(Teacher(t1Name, c3), Cons(Teacher(t1Name, c2),
       Cons(Teacher(t2Name, c2), Cons(Teacher(t2Name, c3), Nil())))))
-    val tsLst = Cons(Teacher(t1Name, c1), Cons(Student(s1Name, s1Year), Cons(Teacher(t1Name, c2),
-      Cons(Teacher(t2Name, c2), Cons(Student(s2Name, s2Year), Nil())))))
-    assertEquals(Cons(c1, Cons(c3, Cons(c2, Nil()))), getCourses(tLst))
-    assertEquals(Cons(c1, Cons(c2, Nil())), getCourses(tsLst))
+    assertEquals(Cons(c1, Cons(c2, Cons(c3, Nil()))), getCourses(tLst))
 
   @Test def getCoursesFlatmapTest(): Unit =
     val tLst = Cons(Teacher(t1Name, c1), Cons(Teacher(t1Name, c3), Cons(Teacher(t1Name, c2),
       Cons(Teacher(t2Name, c2), Cons(Teacher(t2Name, c3), Nil())))))
-    val tsLst = Cons(Teacher(t1Name, c1), Cons(Student(s1Name, s1Year), Cons(Teacher(t1Name, c2),
-      Cons(Teacher(t2Name, c2), Cons(Student(s2Name, s2Year), Nil())))))
-    assertEquals(Cons(c1, Cons(c3, Cons(c2, Nil()))), getCoursesFlatmap(tLst))
-    assertEquals(Cons(c1, Cons(c2, Nil())), getCoursesFlatmap(tsLst))
+    assertEquals(Cons(c1, Cons(c2, Cons(c3, Nil()))), getCoursesFlatmap(tLst))
 
   @Test def foldLeftTest(): Unit =
     assertEquals(-16, foldLeft(foldlst)(foldReduce)(foldOp))
