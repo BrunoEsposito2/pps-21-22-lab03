@@ -1,6 +1,7 @@
 package u03
 
 import u02.Optionals.*
+import u03.Lists.List.foldLeft
 
 object Lists extends App:
 
@@ -49,6 +50,27 @@ object Lists extends App:
       case Cons(h, _) => Some(h)
       case Nil() => None()
 
+    /**
+    * Task part 2 es.4
+    */
+    def foldLeft(lst: List[Int])(reduce: Int)(op: (Int, Int) => Int): Int = lst match
+      case Cons(h, t) => foldLeft(t)(op(reduce, h))((reduce, h1) => op(reduce, h1))
+      case Nil() => reduce
+
+    def foldRight(lst: List[Int])(reduce: Int)(op: (Int, Int) => Int): Int = lst match
+      case Cons(h, t) => foldRight(t)(op(h, reduce))((h1, reduce) => op(h1, reduce))
+      case Nil() => op(0, reduce)
+
+  /*
+  * Test print of foldLeft
+  *
+  val lst = List.Cons(3, List.Cons(7, List.Cons(1, List.Cons(5, List.Nil()))))
+  println(foldLeft(lst)(0)(_ - _))
+  */
+
+  val lst = List.Cons(3, List.Cons(7, List.Cons(1, List.Cons(5, List.Nil()))))
+  println(List.foldRight(lst)(0)(_ - _))
+
   val l = List.Cons(10, List.Cons(20, List.Cons(30, List.Nil())))
   println(List.sum(l)) // 60
 
@@ -68,7 +90,27 @@ object Lists extends App:
   println(flatMap(l)(v => Cons(v + 1, Cons(v + 2, Nil()))))
 
   /**
-  * Task part 2 (more on lists)
+  * Task part 2 es.3
   */
 
-  /* TODO: Person */
+  enum Person:
+    case Student(name: String, year: Int)
+    case Teacher(name: String, course: String)
+
+  object Person:
+
+    def name(p: Person): String = p match
+      case Student(n, _) => n
+      case Teacher(n, _) => n
+
+    def course[Teacher](p: Person): String = p match
+      case Teacher(_, c) => c
+      case _ => null
+
+    def getCourses(p: List[Person]): List[String] = p match
+      case Cons(h, t) => map(filter(p)(h => course(h) != null))(h => course(h))
+      case Nil() => Nil()
+
+    def getCoursesFlatmap(p: List[Person]): List[String] = p match
+      case Cons(h, t) => flatMap(p)(s => Cons(course(h), getCourses(t)))
+      case Nil() => Nil()
