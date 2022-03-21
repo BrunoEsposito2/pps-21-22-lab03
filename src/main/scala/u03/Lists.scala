@@ -32,15 +32,11 @@ object Lists extends App:
 
     def drop[A](l: List[A], n: Int): List[A] = l match
       case Cons(h, t) if n > 0 => drop(t, n-1)
-      case Cons(h, t) if n == 0 => l
-      case _ => Nil()
+      case _ => l
 
-    def append[A](left: List[A], right: List[A]): List[A] = (left, right) match
-      case (Cons(h, t), Cons(h2, t2)) if t != Nil() => Cons(h, append(t, right))
-      case (Cons(h, t), Cons(h2, t2)) if t == Nil() => append(Cons(h,  right), t)
-      case (Cons(h, t), Nil()) => left
-      case (Nil(), Cons(h2, t2)) => right
-      case _ => Nil()
+    def append[A](left: List[A], right: List[A]): List[A] = left match
+      case Cons(h, t) => Cons(h, append(t, right))
+      case _ => right
 
     def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] = l match
       case Cons(h, t) => append(f(h), flatMap(t)(f))
@@ -57,12 +53,10 @@ object Lists extends App:
     */
     def foldLeft(lst: List[Int])(reduce: Int)(op: (Int, Int) => Int): Int = lst match
       case Cons(h, t) => foldLeft(t)(op(reduce, h))((reduce, h1) => op(reduce, h1))
-      case Nil() => reduce
       case _ => reduce
 
     def foldRight(lst: List[Int])(reduce: Int)(op: (Int, Int) => Int): Int = lst match
       case Cons(h, t) => foldRight(t)(op(h, reduce))((h1, reduce) => op(h1, reduce))
-      case Nil() => op(0, reduce)
       case _ => reduce
 
   /*

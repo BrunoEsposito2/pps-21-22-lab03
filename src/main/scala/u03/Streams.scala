@@ -49,18 +49,10 @@ object Streams extends App:
     def constant[A](k: A): Stream[A] =
       Stream.iterate(k)(_ => k)
 
-    def fib(n: Int): Int = n match
-      case 0 => 0
-      case 1 => 1
-      case _ => fib(n - 1) + fib(n - 2)
-
-    def fibStream(stream: Stream[Int]): Stream[Int] = stream match
-      case Cons(head, tail) if head() == 0 || head() == 1 => cons(head(), fibStream(tail()))
-      case Cons(head, tail) => cons(fib(head()), fibStream(tail()))
-      case Empty() => Empty()
-      case _ => Empty()
-
-    val fibs: Stream[Int] = fibStream(Stream.iterate(0)(_ + 1))
+    val fibs: Stream[Int] =
+      def fib(x: Int, y: Int): Stream[Int] =
+        cons(x, fib(y, x + y))
+      fib(0,1)
 
   end Stream
 
