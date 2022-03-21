@@ -23,17 +23,17 @@ object Lists extends App:
      */
     def map[A, B](l: List[A])(mapper: A => B): List[B] = l match
       case Cons(h, t) => flatMap(l)(h => Cons(mapper(h), Nil()))
-      case Nil() => Nil()
+      case _ => Nil()
 
     def filter[A](l1: List[A])(pred: A => Boolean): List[A] = l1 match
       case Cons(h, t) if pred(h) => flatMap(l1)(s => Cons(h, filter(t)(pred)))
       case Cons(_, Cons(h, t)) => Cons(h, filter(t)(pred))
-      case Nil() => Nil()
+      case _ => Nil()
 
     def drop[A](l: List[A], n: Int): List[A] = l match
       case Cons(h, t) if n > 0 => drop(t, n-1)
       case Cons(h, t) if n == 0 => l
-      case Nil() => Nil()
+      case _ => Nil()
 
     def append[A](left: List[A], right: List[A]): List[A] = (left, right) match
       case (Cons(h, t), Cons(h2, t2)) if t != Nil() => Cons(h, append(t, right))
@@ -44,13 +44,13 @@ object Lists extends App:
 
     def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] = l match
       case Cons(h, t) => append(f(h), flatMap(t)(f))
-      case Nil() => Nil()
+      case _ => Nil()
 
     def max(l: List[Int]): Option[Int] = l match
       case Cons(h, Cons(h1, t)) if h >= h1 => max(Cons(h, t))
       case Cons(h, Cons(h1, t)) if h1 >= h => max(Cons(h1, t))
       case Cons(h, _) => Some(h)
-      case Nil() => None()
+      case _ => None()
 
     /**
     * Task part 2 es.4
@@ -58,10 +58,12 @@ object Lists extends App:
     def foldLeft(lst: List[Int])(reduce: Int)(op: (Int, Int) => Int): Int = lst match
       case Cons(h, t) => foldLeft(t)(op(reduce, h))((reduce, h1) => op(reduce, h1))
       case Nil() => reduce
+      case _ => reduce
 
     def foldRight(lst: List[Int])(reduce: Int)(op: (Int, Int) => Int): Int = lst match
       case Cons(h, t) => foldRight(t)(op(h, reduce))((h1, reduce) => op(h1, reduce))
       case Nil() => op(0, reduce)
+      case _ => reduce
 
   /*
   * Prints of foldLeft and foldRight
@@ -115,7 +117,9 @@ object Lists extends App:
     def getCourses(p: List[Person]): List[String] = p match
       case Cons(h, t) => Cons(course(h), map(filter(t)(course(_) == course(h)))(course(_)))
       case Nil() => Nil()
+      case _ => Nil()
 
     def getCoursesFlatmap(p: List[Person]): List[String] = p match
       case Cons(h, t) => Cons(course(h), filter(flatMap(t)(s => Cons(course(s), Nil())))(_ == course(h)))
       case Nil() => Nil()
+      case _ => Nil()

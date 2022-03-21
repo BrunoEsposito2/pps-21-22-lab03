@@ -58,15 +58,9 @@ object Streams extends App:
       case Cons(head, tail) if head() == 0 || head() == 1 => cons(head(), fibStream(tail()))
       case Cons(head, tail) => cons(fib(head()), fibStream(tail()))
       case Empty() => Empty()
+      case _ => Empty()
 
     val fibs: Stream[Int] = fibStream(Stream.iterate(0)(_ + 1))
-
-    //val fibs: Stream[Int] =
-      /*lazy val v = Stream.iterate(0)(_ + 1)
-      (v) match
-        //case Cons(head, tail) => cons(head() - 1, tail())
-        case Cons(head, tail) => cons(head() - 1, v) */
-    
 
   end Stream
 
